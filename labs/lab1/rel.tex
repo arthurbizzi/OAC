@@ -80,6 +80,51 @@ Todas as outras foram removidas. Aparentemente, o MARS é capaz de ignorar algum
 
 \section{Exercício 3}
 
-Falar sobre como desenhamos os pontos, as linhas e tudo mais.
+\subsection{Exercício 3.0}
+Todos os comandos implementados na biblioteca gráfica para a coloração de um pixel consistem em carregar o valor da cor desejada na posição equivalente na memória. A relação entre o par de coordenadas x e y dos pixels no display do MARS e sua respectiva posição M no memory map se dá por meio da relação aritmética simples:
+
+$$M = 0xff000000 + x + 320y $$
+ 
+\subsection{Exercício 3.1}
+
+O desenho das linhas entre dois pixels, implementado no procedimento \textit{LINEPROC}, tem como base o cálculo de uma equação de reta que conecte o centro dos dois pontos. Os elementos nessa reta são definidos e manipulados em ponto flutuante, o que aumenta significativamente a sua resolução e permite uma melhor aproximação de retas no espaço euclidiano.
+
+A partir dessa reta abstrata e de um terceiro argumento, definido como espessura ou tolerância, colore-se o traço real da linha no Bitmap Display. A distância de um pixel até a reta é definida pela distância vetorial entre as coordenadas cartesianas do centro do pixel e a própria. Se esse valor for menor que a margem ou tolerância estabelecida, o pixel pertence ao traçado da linha. Esse método permite desenhar linhas de forma versátil e precisa, criando traços sempre conexos e de espessura arbitrária.
+
+\subsection{Exercício 3.2}
+
+Baseado no procedimento de traçado de linhas, a construção de polígonos torna-se apenas um encadeamento de chamadas a essas subrotinas. A rotina \textit{POLY} implementa esse processo por meio do empilhamento dos pontos consecutivos que comporiam o polígono. 
+
+A subrotina \textit{LINEPROC} é então chamada repetidamente, percorrendo a pilha de tal forma que o ponto de chegada da linha anterior se torna o ponto de saída da próxima - até a última linha, que conecta o primeiro ponto ao último.
+
+\subsection{Exercício 3.3}
+
+A elipse é implementada de forma semelhante à linha na subrotina \textit{ELIPSEPROC}. Parametriza-se uma equação de elipse focada nos dois pixels fornecidos e calcula-se a distância de cada ponto a esse objeto geométrico. Esse valor determina se o pixel em questão pertence ou não ao traço da elipse.
+
+\subsection{Exercício 3.4}
+
+O preenchimento, por sua vez, é realizado em \textit{DROPBUCKET}. 
+
+\subsection{Exercício 3.5}
+O traçar do quadrado se torna uma aplicação simples da rotina \textit{POLY}. A partir do centro e do lado, os quatro pontos podem ser obtidos por meio de translações de metade do lado nos dois eixos. Esses pontos são subsequentemente inseridos na função de desenho de polígonos.
+
+\subsection{Exercício 3.6}
+O círculo é, naturalmente, apenas uma elipse em que os dois focos coincidem. A realização desse procedimento consiste apenas na chamada da função elipse
+
+\subsection{Exercício 3.7}
+O desenho do triângulo equilátero deriva de uma identidade simples:
+
+$$||O-V|| = \frac{\sqrt{3}}{3}l $$
+
+Onde $||O-V||$ é o módulo da distância do centro até um dos vértices e $l$ é o lado. Dessa forma, dado o centro é possível encontrar o vértice superior do triângulo: soma-se essa distância a sua coordenada y. 
+
+A partir do vértive superior, encontrar os outros dois que comporão o polígono consiste em translações simples determinadas pelo lado do triângulo e o seno dos ângulos internos ($60^o$)
+
+\subsection{Exercício 3.8}
+
+Com acesso a todas essas ferramentas, a construção das bandeiras é possível via aplicação iterada dos procedimentos da livraria.
+
+Assim, foram feitas as bandeiras dos Estados Unidos, Brasil, Japão, Israel e Butão.
+
 
 \end{document}
